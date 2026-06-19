@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportsHub — Eventi sportivi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/CSS/style.css">
+</head>
+
+<body class="bg-light">
+
+  <header class="site-header text-white text-center py-5">
+    <!-- Titolo dell'app + form di ricerca -->
+    <div class="container">
+      <h1 class="display-4 fw-bold">SportsHub</h1>
+      <p class="lead opacity-75">Cerca una squadra, scopri prossime partite e ultimi risultati.</p>
+      <form class="search-form mx-auto mt-4 d-flex gap-2">
+        <input type="text" class="search-input form-control form-control-lg" placeholder="es. Arsenal, Lakers, Real Madrid...">
+        <button type="submit" class="search-button btn btn-light px-4 fw-bold">Cerca</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="container my-5">
+
+    <section id="preferiti-section" class="mb-5">
+      <h2 class="section-title h4 mb-4">⭐ Le tue squadre preferite</h2>
+      <div id="preferiti-grid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <p class="placeholder-text">Non hai ancora salvato nessuna squadra. Cercane una qui sopra e aggiungila ai preferiti.</p>
+      </div>
+    </section>
+
+    <section id="risultati-section" class="mb-5">
+      <!-- Spinner, errore, lista risultati ricerca squadre -->
+     <h2 class="section-title h4 mb-4">Squadre trovate</h2>
+      <div id="spinner" class="spinner" style="display: none;"></div>
+      <div id="error-message" class="error-message alert alert-danger text-center" style="display: none;"></div>
+      <div id="risultati-grid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <p class="placeholder-text">Inizia cercando una squadra qui sopra.</p>
+      </div>
+    </section>
+
+    <section id="dettagli-section" class="card shadow-sm p-4 bg-white" hidden>>
+      <!-- Visibile dopo click su una squadra: prossimi eventi + ultimi risultati -->
+       <h2 id="nome-squadra-dettaglio" class="h3 text-primary mb-4 border-bottom pb-2">Nome Squadra</h2>
+      <div id="spinner-dettagli" class="spinner" style="display: none;"></div>
+      
+      <div class="row g-4">
+        <div class="col-md-6">
+          <h3 class="h5 border-bottom pb-2 mb-3">Prossimi eventi</h3>
+          <div id="prossimi-eventi-lista" class="d-flex flex-column gap-2"></div>
+        </div>
+        <div class="col-md-6">
+          <h3 class="h5 border-bottom pb-2 mb-3">Ultimi risultati</h3>
+          <div id="ultimi-risultati-lista" class="d-flex flex-column gap-2"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="assets/JS/script.js"></script>
+
+</html>

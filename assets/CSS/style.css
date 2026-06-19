@@ -20,7 +20,7 @@ body {
 }
 
 .site-header {
-  background-color: hsl(220, 60%, 25%);
+  background-color: #193366;
   color: white;
   padding: 30px 20px;
   text-align: center;
@@ -105,15 +105,31 @@ body {
   font-size: 0.9rem;
 }
 
+.btn-gia-preferito {
+  background-color: #e5e7eb !important; /* Grigio chiaro */
+  color: #6b7280 !important;            /* Testo grigio scuro */
+  border: 1px solid #d1d5db !important; /* Bordino leggero */
+  cursor: default !important;           /* Rimuove la manina del click */
+  box-shadow: none !important;          /* Rimuove ombretti */
+}
+
 .btn-aggiungi {
-  background-color: #eab308; 
+  background-color: sfondo hsl(45, 90%, 55%); 
   color: #1e293b;
 }
 
+.btn-aggiungi:hover {
+  background-color: hsl(45, 90%, 48%);
+}
+
 .btn-rimuovi {
-  background-color: #fce8e6;
+  background-color: #ffe5e5;
   color: #dc3545;
   border: 1px solid #fecaca;
+}
+
+.btn-rimuovi:hover {
+  background-color: ffd0d0;
 }
 
 /* Testi di default */

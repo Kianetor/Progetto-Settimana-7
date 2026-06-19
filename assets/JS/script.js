@@ -130,9 +130,14 @@ function renderizzaSquadre(squadre, containerId, isPreferiti = false) {
         colonna.className = "col";
 
         const isGiaPreferito = stato.preferiti.some(p => p.idTeam === squadra.idTeam);
-        const testoBottone = isPreferiti || isGiaPreferito ? "🗑️ Rimuovi" : "⭐ Aggiungi ai preferiti";
-        const classeBottone = isPreferiti || isGiaPreferito ? "btn-preferito btn-rimuovi" : "btn-preferito btn-aggiungi";
+        let testoBottone = isGiaPreferito ? "✓ Già nei preferiti" : "⭐ Aggiungi ai preferiti";
+        let classeBottone = isGiaPreferito ? "btn-preferito btn-gia-preferito" : "btn-preferito btn-aggiungi";
 
+
+        if (isPreferiti) {
+            testoBottone = "🗑️ Rimuovi";
+            classeBottone = "btn-preferito btn-rimuovi";
+        }
 
         colonna.innerHTML = `
       <div class="team-card">
@@ -190,23 +195,42 @@ async function gestisciClickSquadra(squadra) {
 
 /* Gestione squadre preferite */
 
+/* Gestione squadre preferite */
+
 function gestisciPreferito(squadra) {
+    // TROVATO: Se clicco sul pulsante grigio direttamente nella griglia di ricerca, non fare nulla
+    const grigliaRicerca = document.getElementById("risultati-grid");
+    const bottoneRicercaEsistente = grigliaRicerca ? grigliaRicerca.querySelector(`[data-id="${squadra.idTeam}"]`) : null;
+    
+    const isGiaPreferitoPrimaDelClick = stato.preferiti.some(p => p.idTeam === squadra.idTeam);
+    
+    // Se la squadra è già nei preferiti E l'utente ha cliccato sul bottone dentro la ricerca, blocca l'azione
+    if (isGiaPreferitoPrimaDelClick && bottoneRicercaEsistente && event && event.target === bottoneRicercaEsistente) {
+        return; 
+    }
+
+    // 1. Modifica l'array nello stato (Aggiungi o Rimuovi)
     const index = stato.preferiti.findIndex(p => p.idTeam === squadra.idTeam);
     if (index > -1) {
         stato.preferiti.splice(index, 1);
     } else {
         stato.preferiti.push(squadra);
     }
+    
+    // 2. Salva i dati aggiornati nel browser
     localStorage.setItem("sportsHub_preferiti", JSON.stringify(stato.preferiti));
 
+    // 3. Ridisegna da zero la sezione dei preferiti in alto
     renderizzaSquadre(stato.preferiti, "preferiti-grid", true);
 
-    const grigliaRicerca = document.getElementById("risultati-grid");
-    const bottoneRilevante = grigliaRicerca.querySelector(`[data-id="${squadra.idTeam}"]`);
-    if (bottoneRilevante) {
-        const isGiaPreferito = stato.preferiti.some(p => p.idTeam === squadra.idTeam);
-        bottoneRilevante.textContent = isGiaPreferito ? "🗑️ Rimuovi" : "⭐ Aggiungi ai preferiti";
-        bottoneRilevante.className = isGiaPreferito ? "btn-preferito btn-rimuovi" : "btn-preferito btn-aggiungi";
+    // 4. Aggiorna solo il bottone dentro i risultati di ricerca se esiste
+    if (grigliaRicerca) {
+        const bottoniRicerca = grigliaRicerca.querySelectorAll(`[data-id="${squadra.idTeam}"]`);
+        bottoniRicerca.forEach(bottone => {
+            const isGiaPreferito = stato.preferiti.some(p => p.idTeam === squadra.idTeam);
+            bottone.textContent = isGiaPreferito ? "✓ Già nei preferiti" : "⭐ Aggiungi ai preferiti";
+            bottone.className = isGiaPreferito ? "btn-preferito btn-gia-preferito" : "btn-preferito btn-aggiungi";
+        });
     }
 }
 
@@ -232,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     formRicerca.addEventListener("submit", async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         const query = inputRicerca.value.trim();
 
         document.getElementById("risultati-grid").innerHTML = "";
